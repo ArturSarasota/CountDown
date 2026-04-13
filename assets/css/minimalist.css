@@ -1,12 +1,12 @@
-/* Dark navy + white minimalist styling for a refined look */
+/* Dark navy + white, with tasteful animation accents */
 :root{
   --navy-900: #0B1C3A;     /* deep navy background */
-  --navy-700: #12284F;     /* subtle gradients */
-  --white-100: #FFFFFF;    /* foreground */
+  --navy-700: #12284F;     /* gradient top */
+  --white-100: #FFFFFF;
   --white-70:  rgba(255,255,255,.70);
   --white-45:  rgba(255,255,255,.45);
-  --white-12:  rgba(255,255,255,.12); /* separators */
-  --accent:    #FDB515;    /* gentle highlight (sunset gold) */
+  --white-12:  rgba(255,255,255,.12);
+  --accent:    #FDB515;    /* warm gold accent */
 }
 
 /* Page */
@@ -17,77 +17,79 @@ body{
 
 /* Heading */
 h1{
-  color: var(--white-100);
-  letter-spacing: .02em;
-  text-align: center;
-  margin: 16px 0 6px;
+  text-align:center; margin:16px 0 6px;
+  color:var(--white-100); letter-spacing:.02em;
 }
-.sub{
-  text-align:center;
-  color: var(--white-70);
-  margin-bottom: 24px;
-}
+.sub{ text-align:center; color:var(--white-70); margin-bottom:24px; }
 
-/* Timer wrapper */
+/* Timer wrapper as a raised "glass card" */
 .timer{
-  gap: 0;
-  border: 1px solid var(--white-12);
-  border-radius: 16px;
+  gap:0;
+  border:1px solid var(--white-12);
+  border-radius:16px;
   backdrop-filter: blur(4px);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  box-shadow:
-    0 10px 24px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.15);
-  padding: 8px;
-  justify-content: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15);
+  padding:12px; justify-content:center;
 }
 
 /* Blocks */
 .block{
-  padding: 14px 22px;
-  border-right: 1px solid var(--white-12);
-  min-width: 100px;
-  text-align: center;
+  padding:16px 22px; min-width:110px; text-align:center;
+  border-right:1px solid var(--white-12); position:relative;
 }
-.block:last-child{border-right:none}
+.block:last-child{ border-right:none }
+
+/* Animated accent underline under each block */
+.block::after{
+  content:""; position:absolute; left:16px; right:16px; bottom:10px; height:2px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, var(--accent) 60%, transparent 100%);
+  opacity:.35; transform:scaleX(0); transform-origin:left center;
+  transition: transform .6s ease, opacity .3s ease;
+}
+.block:hover::after{ transform:scaleX(1); opacity:.6 }
 
 /* Numbers */
 .num{
-  font-size: clamp(2.25rem, 7.5vw, 3.75rem);
-  font-weight: 800;
-  line-height: 1.05;
-  color: var(--white-100);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800; line-height:1.05; color:var(--white-100);
   font-variant-numeric: tabular-nums lining-nums;
-  letter-spacing: .02em;
-  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+  letter-spacing:.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  display:inline-block;
 }
 
 /* Labels */
 .label{
-  display:block;
-  margin-top: 6px;
-  font-size: .95rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--white-45);
+  display:block; margin-top:6px; font-size:.95rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--white-45);
 }
 
-/* Done message (shown at completion) */
+/* Completion message */
 .done{
-  width:100%;
-  text-align:center;
-  padding: 10px 0 4px;
-  color: var(--accent);
-  font-weight: 700;
+  width:100%; text-align:center; padding:10px 0 4px;
+  color:var(--accent); font-weight:700;
 }
 
-/* Mobile refinement */
+/* Micro-animations */
+@keyframes flipAnim{
+  0%   { transform: rotateX(0deg); }
+  45%  { transform: rotateX(180deg); }
+  100% { transform: rotateX(360deg); }
+}
+@keyframes pulseAnim{
+  0%   { transform: scale(1);    text-shadow: 0 2px 10px rgba(0,0,0,.35); }
+  50%  { transform: scale(1.06); text-shadow: 0 4px 18px rgba(0,0,0,.45); }
+  100% { transform: scale(1);    text-shadow: 0 2px 10px rgba(0,0,0,.35); }
+}
+
+.flip{ animation: flipAnim .6s cubic-bezier(.2,.75,.25,1) both; transform-origin:center }
+.pulse{ animation: pulseAnim .6s ease-in-out both; }
+
 @media (max-width:600px){
-  .block{min-width:86px;padding:12px 16px}
+  .block{ min-width:90px; padding:12px 16px }
 }
-
-/* High-contrast mode users (accessibility) */
 @media (prefers-contrast: more){
-  .timer{background: none; backdrop-filter:none}
-  .label{color: var(--white-70)}
+  .timer{ background:none; backdrop-filter:none }
+  .label{ color: var(--white-70) }
 }
