@@ -1,51 +1,89 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Countdown to America's 250th Anniversary</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <!-- Shared base styles -->
-  assets/css/base.css
-
-  <!-- Minimalist dark theme -->
-  assets/css/minimalist.css
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Base + theme styles -->
+  ./assets/css/base.css
+  ./assets/css/minimalist.css
 </head>
 <body>
-  <div class="container">
-    <h1>Countdown to America's 250th Anniversary</h1>
-    <p class="sub">July 4, 2026 &middot; 9:00 PM (EDT)</p>
+  <!-- Accessible skip to content -->
+  #mainSkip to countdown</a>
 
-    <!-- Accessible live region -->
-    <div id="cd" class="count timer" aria-live="polite" aria-label="Countdown in days, hours, minutes, and seconds">
-      <div class="block">
-        <span class="num" data-part="days" aria-label="Days remaining">0</span>
-        <span class="label">Days</span>
+  <!-- Full-screen fireworks canvas (decorative) -->
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <!-- Frame with dark navy border & centered content -->
+  <main id="main" class="frame" role="main" aria-labelledby="title">
+    <div class="container center">
+      <h1 id="title">Countdown to America's 250th Anniversary</h1>
+      <p class="sub">July 4, 2026 · 9:00 PM (EDT)</p>
+
+      <!-- Controls for motion per WCAG 2.2.2 -->
+      <div class="controls" role="group" aria-label="Animation controls">
+        <button id="toggleMotion" class="btn" aria-pressed="false">Pause animation</button>
       </div>
-      <div class="block">
-        <span class="num" data-part="hours" aria-label="Hours remaining">00</span>
-        <span class="label">Hours</span>
+
+      <!-- Timer (centered, aligned) -->
+      <div id="cd" class="count timer" aria-live="polite"
+           aria-label="Countdown in days, hours, minutes, and seconds">
+        <div class="block">
+          <span class="num" data-part="days" aria-label="Days remaining">0</span>
+          <span class="label">Days</span>
+        </div>
+        <div class="block">
+          <span class="num" data-part="hours" aria-label="Hours remaining">00</span>
+          <span class="label">Hours</span>
+        </div>
+        <div class="block">
+          <span class="num" data-part="minutes" aria-label="Minutes remaining">00</span>
+          <span class="label">Minutes</span>
+        </div>
+        <div class="block">
+          <span class="num" data-part="seconds" aria-label="Seconds remaining">00</span>
+          <span class="label">Seconds</span>
+        </div>
+        <div class="done" data-part="done" hidden>Happy 4th of July! 🎆</div>
       </div>
-      <div class="block">
-        <span class="num" data-part="minutes" aria-label="Minutes remaining">00</span>
-        <span class="label">Minutes</span>
-      </div>
-      <div class="block">
-        <span class="num" data-part="seconds" aria-label="Seconds remaining">00</span>
-        <span class="label">Seconds</span>
-      </div>
-      <div class="done" data-part="done" hidden>Happy 4th of July! 🎆</div>
     </div>
-  </div>
+  </main>
 
-  <!-- Countdown logic (shared) -->
+  <!-- Countdown + fireworks -->
   <script type="module">
     import { startCountdown } from './assets/js/countdown.js';
+    import { startFireworks } from './assets/js/fireworks.js';
 
     const root = document.getElementById('cd');
+    const toggleBtn = document.getElementById('toggleMotion');
+    const sky = document.getElementById('sky');
+
+    // Start fireworks (gentle; no rapid flashing)
+    let fw = startFireworks(sky);
+    let motionPaused = false;
+
+    // Respect prefers-reduced-motion: start paused
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      fw.setIntensity(0);
+      motionPaused = true;
+      toggleBtn.setAttribute('aria-pressed', 'true');
+      toggleBtn.textContent = 'Resume animation';
+    }
+
+    // Keyboard-accessible pause/resume control (WCAG 2.2.2)
+    toggleBtn.addEventListener('click', () => {
+      motionPaused = !motionPaused;
+      fw.setIntensity(motionPaused ? 0 : 0.35);
+      toggleBtn.setAttribute('aria-pressed', motionPaused ? 'true' : 'false');
+      toggleBtn.textContent = motionPaused ? 'Resume animation' : 'Pause animation';
+    });
+
+    // Countdown updates (centered text)
     startCountdown(root, (ms, p) => {
-      // Keep a crisp, informative tab title
-      document.title = `🇺🇸 ${p.d}d ${String(p.h).padStart(2,'0')}:${String(p.m).padStart(2,'0')}:${String(p.sec).padStart(2,'0')} — America's 250th`;
+      document.title =
+        `🇺🇸 ${p.d}d ${String(p.h).padStart(2,'0')}:${String(p.m).padStart(2,'0')}:${String(p.sec).padStart(2,'0')} — America’s 250th`;
     });
   </script>
 </body>
