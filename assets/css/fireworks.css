@@ -1,0 +1,12 @@
+.hero{position:relative;min-height:100vh;background:linear-gradient(180deg, #00172E 0%, #01294D 100%)}
+#sky{position:absolute;inset:0;width:100%;height:100%}
+.overlay{position:relative;z-index:2;color:#fff;text-align:center;padding-top:10vh}
+.glass{
+  background:rgba(255,255,255,.12);
+  backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:16px;
+  padding:16px;
+  margin-top:16px;
+}
+.label{color:#ddd}
