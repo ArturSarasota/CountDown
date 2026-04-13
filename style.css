@@ -26,7 +26,7 @@ body, html {
 h1 {
     font-family: Arial, sans-serif;
     /* Extra Bold settings */
-    font-weight: 900 !important; 
+    font-weight: 600 !important; 
     font-size: 3.8rem;
     margin-bottom: 2.5rem;
     text-transform: uppercase;
