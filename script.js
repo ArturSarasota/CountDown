@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // If the countdown finishes
         if (distance < 0) {
             clearInterval(timerInterval);
-            document.getElementById("countdown").innerHTML = "<h2 style='font-size: 5rem;'>Happy 250th Anniversary!</h2>";
+            document.getElementById("countdown").innerHTML = "<h2 style='font-size: 3.5rem;'>Happy 250th Anniversary!</h2>";
         }
     }, 1000);
 });
