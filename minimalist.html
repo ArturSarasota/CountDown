@@ -2,26 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>July 4 Countdown — Minimalist</title>
+  <title>Countdown to America's 250th Anniversary</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="assets/css/basecss
+
+  <!-- Shared base styles -->
+  assets/css/base.css
+
+  <!-- Minimalist dark theme -->
+  assets/css/minimalist.css
 </head>
 <body>
   <div class="container">
-    <h1>Countdown to July 4 — 9:00 PM</h1>
-    <div id="cd" class="count" aria-live="polite">
-      <div class="block"><span class="num" data-part="days">0</span><span class="label">Days</span></div>
-      <div class="block"><span class="num" data-part="hours">00</span><span class="label">Hours</span></div>
-      <div class="block"><span class="num" data-part="minutes">00</span><span class="label">Minutes</span></div>
-      <div class="block"><span class="num" data-part="seconds">00</span><span class="label">Seconds</span></div>
-      <div class="label" data-part="done" hidden>Happy 4th of July! 🎆</div>
+    <h1>Countdown to America's 250th Anniversary</h1>
+    <p class="sub">July 4, 2026 &middot; 9:00 PM (EDT)</p>
+
+    <!-- Accessible live region -->
+    <div id="cd" class="count timer" aria-live="polite" aria-label="Countdown in days, hours, minutes, and seconds">
+      <div class="block">
+        <span class="num" data-part="days" aria-label="Days remaining">0</span>
+        <span class="label">Days</span>
+      </div>
+      <div class="block">
+        <span class="num" data-part="hours" aria-label="Hours remaining">00</span>
+        <span class="label">Hours</span>
+      </div>
+      <div class="block">
+        <span class="num" data-part="minutes" aria-label="Minutes remaining">00</span>
+        <span class="label">Minutes</span>
+      </div>
+      <div class="block">
+        <span class="num" data-part="seconds" aria-label="Seconds remaining">00</span>
+        <span class="label">Seconds</span>
+      </div>
+      <div class="done" data-part="done" hidden>Happy 4th of July! 🎆</div>
     </div>
   </div>
 
+  <!-- Countdown logic (shared) -->
   <script type="module">
     import { startCountdown } from './assets/js/countdown.js';
-    startCountdown(document.getElementById('cd'), (ms, p) => {
-      document.title = `⌚ ${p.d}d ${String(p.h).padStart(2,'0')}:${String(p.m).padStart(2,'0')}:${String(p.sec).padStart(2,'0')}`;
+
+    const root = document.getElementById('cd');
+    startCountdown(root, (ms, p) => {
+      // Keep a crisp, informative tab title
+      document.title = `🇺🇸 ${p.d}d ${String(p.h).padStart(2,'0')}:${String(p.m).padStart(2,'0')}:${String(p.sec).padStart(2,'0')} — America's 250th`;
     });
   </script>
 </body>
