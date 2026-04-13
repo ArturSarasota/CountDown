@@ -1,95 +1,112 @@
-/* Dark navy + white, with tasteful animation accents */
+/* Dark navy theme, centered layout, accessible focus states */
 :root{
-  --navy-900: #0B1C3A;     /* deep navy background */
+  --navy-900: #0B1C3A;     /* border / deep navy */
+  --navy-800: #0E1F3F;     /* frame background */
   --navy-700: #12284F;     /* gradient top */
   --white-100: #FFFFFF;
-  --white-70:  rgba(255,255,255,.70);
-  --white-45:  rgba(255,255,255,.45);
-  --white-12:  rgba(255,255,255,.12);
+  --white-80:  rgba(255,255,255,.80);
+  --white-60:  rgba(255,255,255,.60);
+  --white-24:  rgba(255,255,255,.24);
   --accent:    #FDB515;    /* warm gold accent */
 }
 
-/* Page */
+/* Page canvas underlays fireworks; content is in .frame */
 body{
-  background: radial-gradient(1200px 800px at 50% -20%, var(--navy-700) 0%, var(--navy-900) 45%, var(--navy-900) 100%);
-  color: var(--white-100);
+  margin:0;
+  color:var(--white-100);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
-/* Heading */
-h1{
-  text-align:center; margin:16px 0 6px;
-  color:var(--white-100); letter-spacing:.02em;
+/* Decorative canvas (behind everything) */
+#sky{
+  position:fixed; inset:0; width:100%; height:100%;
+  z-index:0; background: radial-gradient(1200px 800px at 50% -20%, var(--navy-700) 0%, var(--navy-800) 45%, var(--navy-800) 100%);
 }
-.sub{ text-align:center; color:var(--white-70); margin-bottom:24px; }
 
-/* Timer wrapper as a raised "glass card" */
+/* Dark navy frame with white text + border */
+.frame{
+  position:relative; z-index:1;
+  min-height:100vh; display:grid; place-items:center;
+  border:12px solid var(--navy-900);
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+}
+
+/* Centered container */
+.container.center{
+  max-width:900px; margin:auto; padding:24px;
+  text-align:center;
+}
+
+/* Heading and subtext */
+h1{ margin:16px 0 6px; color:var(--white-100); letter-spacing:.02em }
+.sub{ color:var(--white-80); margin-bottom:20px }
+
+/* Motion control button */
+.controls{ display:flex; justify-content:center; margin-bottom:14px }
+.btn{
+  appearance:none; border:1px solid var(--white-24); color:var(--white-100);
+  background:rgba(255,255,255,.08);
+  padding:10px 14px; border-radius:10px; cursor:pointer;
+}
+.btn:hover{ background:rgba(255,255,255,.12) }
+.btn:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:2px;
+}
+
+/* Timer card (centered) */
 .timer{
-  gap:0;
-  border:1px solid var(--white-12);
-  border-radius:16px;
+  display:flex; flex-wrap:wrap; gap:0; justify-content:center;
+  border:1px solid var(--white-24);
+  border-radius:16px; padding:12px;
   backdrop-filter: blur(4px);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   box-shadow: 0 10px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15);
-  padding:12px; justify-content:center;
 }
 
 /* Blocks */
 .block{
   padding:16px 22px; min-width:110px; text-align:center;
-  border-right:1px solid var(--white-12); position:relative;
+  border-right:1px solid var(--white-24); position:relative;
 }
 .block:last-child{ border-right:none }
 
-/* Animated accent underline under each block */
+/* Accent underline on hover (no fast flashing) */
 .block::after{
   content:""; position:absolute; left:16px; right:16px; bottom:10px; height:2px;
   background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, var(--accent) 60%, transparent 100%);
-  opacity:.35; transform:scaleX(0); transform-origin:left center;
+  opacity:.45; transform:scaleX(0); transform-origin:left center;
   transition: transform .6s ease, opacity .3s ease;
 }
-.block:hover::after{ transform:scaleX(1); opacity:.6 }
+.block:hover::after{ transform:scaleX(1); opacity:.7 }
 
-/* Numbers */
+/* Numbers / labels (centered) */
 .num{
   font-size: clamp(2.5rem, 8vw, 4rem);
-  font-weight: 800; line-height:1.05; color:var(--white-100);
+  font-weight:800; line-height:1.05; color:var(--white-100);
   font-variant-numeric: tabular-nums lining-nums;
-  letter-spacing:.02em;
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  letter-spacing:.02em; text-shadow: 0 2px 10px rgba(0,0,0,.35);
   display:inline-block;
 }
-
-/* Labels */
 .label{
-  display:block; margin-top:6px; font-size:.95rem; letter-spacing:.08em;
-  text-transform:uppercase; color:var(--white-45);
+  display:block; margin-top:6px; font-size:.95rem;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--white-60);
 }
 
 /* Completion message */
-.done{
-  width:100%; text-align:center; padding:10px 0 4px;
-  color:var(--accent); font-weight:700;
-}
+.done{ width:100%; text-align:center; padding:10px 0 4px; color:var(--accent); font-weight:700 }
 
-/* Micro-animations */
-@keyframes flipAnim{
-  0%   { transform: rotateX(0deg); }
-  45%  { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
+/* Skip link for keyboard nav */
+.skip{
+  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
 }
-@keyframes pulseAnim{
-  0%   { transform: scale(1);    text-shadow: 0 2px 10px rgba(0,0,0,.35); }
-  50%  { transform: scale(1.06); text-shadow: 0 4px 18px rgba(0,0,0,.45); }
-  100% { transform: scale(1);    text-shadow: 0 2px 10px rgba(0,0,0,.35); }
-}
+.skip:focus{ position:fixed; left:16px; top:16px; width:auto; height:auto; padding:8px 12px; background:#000; color:#fff; z-index:9999 }
 
-.flip{ animation: flipAnim .6s cubic-bezier(.2,.75,.25,1) both; transform-origin:center }
-.pulse{ animation: pulseAnim .6s ease-in-out both; }
+/* Mobile refinement */
+@media (max-width:600px){ .block{ min-width:90px; padding:12px 16px } }
 
-@media (max-width:600px){
-  .block{ min-width:90px; padding:12px 16px }
-}
-@media (prefers-contrast: more){
-  .timer{ background:none; backdrop-filter:none }
-  .label{ color: var(--white-70) }
+/* Respect reduced motion: disable decorative animation */
+@media (prefers-reduced-motion: reduce){
+  /* Fireworks intensity is set to 0 in JS; ensure CSS effects are still calm */
+  .block::after{ transition: none }
 }
