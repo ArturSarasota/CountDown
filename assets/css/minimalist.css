@@ -1,19 +1,93 @@
-body{background:#fff}
-.container{max-width:720px}
-.num{color:#111}
-.label{color:#666}
+/* Dark navy + white minimalist styling for a refined look */
+:root{
+  --navy-900: #0B1C3A;     /* deep navy background */
+  --navy-700: #12284F;     /* subtle gradients */
+  --white-100: #FFFFFF;    /* foreground */
+  --white-70:  rgba(255,255,255,.70);
+  --white-45:  rgba(255,255,255,.45);
+  --white-12:  rgba(255,255,255,.12); /* separators */
+  --accent:    #FDB515;    /* gentle highlight (sunset gold) */
+}
 
-/* Thin separators for a clean look */
-.count{gap:0}
+/* Page */
+body{
+  background: radial-gradient(1200px 800px at 50% -20%, var(--navy-700) 0%, var(--navy-900) 45%, var(--navy-900) 100%);
+  color: var(--white-100);
+}
+
+/* Heading */
+h1{
+  color: var(--white-100);
+  letter-spacing: .02em;
+  text-align: center;
+  margin: 16px 0 6px;
+}
+.sub{
+  text-align:center;
+  color: var(--white-70);
+  margin-bottom: 24px;
+}
+
+/* Timer wrapper */
+.timer{
+  gap: 0;
+  border: 1px solid var(--white-12);
+  border-radius: 16px;
+  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.15);
+  padding: 8px;
+  justify-content: center;
+}
+
+/* Blocks */
 .block{
-  padding:12px 18px;border-right:1px solid #eee;
+  padding: 14px 22px;
+  border-right: 1px solid var(--white-12);
+  min-width: 100px;
+  text-align: center;
 }
 .block:last-child{border-right:none}
 
-/* Dark mode (uses OS preference) */
-@media (prefers-color-scheme: dark){
-  body{background:#0E1116;color:#EDEFF2}
-  .num{color:#EDEFF2}
-  .label{color:#A6ACB2}
-  .block{border-color:#20252C}
+/* Numbers */
+.num{
+  font-size: clamp(2.25rem, 7.5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--white-100);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: .02em;
+  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+
+/* Labels */
+.label{
+  display:block;
+  margin-top: 6px;
+  font-size: .95rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--white-45);
+}
+
+/* Done message (shown at completion) */
+.done{
+  width:100%;
+  text-align:center;
+  padding: 10px 0 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Mobile refinement */
+@media (max-width:600px){
+  .block{min-width:86px;padding:12px 16px}
+}
+
+/* High-contrast mode users (accessibility) */
+@media (prefers-contrast: more){
+  .timer{background: none; backdrop-filter:none}
+  .label{color: var(--white-70)}
 }
