@@ -1,4 +1,4 @@
-/* Dark navy theme, centered layout, accessible focus states */
+/* Dark navy minimalist with inline timer, bold typography */
 :root{
   --navy-900: #0B1C3A;     /* border / deep navy */
   --navy-800: #0E1F3F;     /* frame background */
@@ -10,20 +10,17 @@
   --accent:    #FDB515;    /* warm gold accent */
 }
 
-/* Page canvas underlays fireworks; content is in .frame */
-body{
-  margin:0;
-  color:var(--white-100);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-}
+/* Page */
+body{ margin:0; color:var(--white-100); font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif }
 
-/* Decorative canvas (behind everything) */
+/* Decorative canvas background */
 #sky{
   position:fixed; inset:0; width:100%; height:100%;
-  z-index:0; background: radial-gradient(1200px 800px at 50% -20%, var(--navy-700) 0%, var(--navy-800) 45%, var(--navy-800) 100%);
+  z-index:0;
+  background: radial-gradient(1200px 800px at 50% -20%, var(--navy-700) 0%, var(--navy-800) 45%, var(--navy-800) 100%);
 }
 
-/* Dark navy frame with white text + border */
+/* Dark navy frame with white text + visible border */
 .frame{
   position:relative; z-index:1;
   min-height:100vh; display:grid; place-items:center;
@@ -31,82 +28,81 @@ body{
   background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
 }
 
-/* Centered container */
-.container.center{
-  max-width:900px; margin:auto; padding:24px;
-  text-align:center;
-}
+/* Centered content */
+.container.center{ max-width:1000px; margin:auto; padding:28px; text-align:center }
 
-/* Heading and subtext */
-h1{ margin:16px 0 6px; color:var(--white-100); letter-spacing:.02em }
+/* Headline + subtitle */
+h1{
+  margin:18px 0 8px; color:var(--white-100);
+  letter-spacing:.02em; font-weight:900;
+  font-size: clamp(1.75rem, 4.8vw, 3rem);
+}
 .sub{ color:var(--white-80); margin-bottom:20px }
 
 /* Motion control button */
-.controls{ display:flex; justify-content:center; margin-bottom:14px }
+.controls{ display:flex; justify-content:center; margin-bottom:16px }
 .btn{
   appearance:none; border:1px solid var(--white-24); color:var(--white-100);
   background:rgba(255,255,255,.08);
-  padding:10px 14px; border-radius:10px; cursor:pointer;
+  padding:10px 16px; border-radius:10px; cursor:pointer;
+  font-weight:700;
 }
 .btn:hover{ background:rgba(255,255,255,.12) }
-.btn:focus-visible{
-  outline:3px solid var(--accent);
-  outline-offset:2px;
-}
+.btn:focus-visible{ outline:3px solid var(--accent); outline-offset:2px }
 
-/* Timer card (centered) */
-.timer{
-  display:flex; flex-wrap:wrap; gap:0; justify-content:center;
-  border:1px solid var(--white-24);
-  border-radius:16px; padding:12px;
+/* ✅ Inline timer line (not stacked) */
+.timer-line{
+  display:flex; align-items:baseline; justify-content:center; flex-wrap:nowrap;
+  gap: clamp(8px, 2vw, 18px);
+  padding:14px 18px; border:1px solid var(--white-24); border-radius:16px;
   backdrop-filter: blur(4px);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   box-shadow: 0 10px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.15);
 }
 
-/* Blocks */
-.block{
-  padding:16px 22px; min-width:110px; text-align:center;
-  border-right:1px solid var(--white-24); position:relative;
+/* Each item: number + label inline */
+.item{
+  display:flex; align-items:baseline; gap:10px;
+  white-space:nowrap;
 }
-.block:last-child{ border-right:none }
 
-/* Accent underline on hover (no fast flashing) */
-.block::after{
-  content:""; position:absolute; left:16px; right:16px; bottom:10px; height:2px;
-  background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, var(--accent) 60%, transparent 100%);
-  opacity:.45; transform:scaleX(0); transform-origin:left center;
-  transition: transform .6s ease, opacity .3s ease;
-}
-.block:hover::after{ transform:scaleX(1); opacity:.7 }
-
-/* Numbers / labels (centered) */
+/* Big, bold numbers */
 .num{
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  font-weight:800; line-height:1.05; color:var(--white-100);
+  font-size: clamp(2.25rem, 7.5vw, 4rem);
+  font-weight:900; line-height:1; color:var(--white-100);
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing:.02em; text-shadow: 0 2px 10px rgba(0,0,0,.35);
-  display:inline-block;
 }
+
+/* Inline labels (uppercase, slightly smaller) */
 .label{
-  display:block; margin-top:6px; font-size:.95rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   letter-spacing:.08em; text-transform:uppercase; color:var(--white-60);
+  font-weight:800;
 }
 
-/* Completion message */
-.done{ width:100%; text-align:center; padding:10px 0 4px; color:var(--accent); font-weight:700 }
+/* Separator */
+.sep{
+  color: var(--white-60);
+  font-weight:800;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
 
-/* Skip link for keyboard nav */
+/* Done message */
+.done{ width:100%; text-align:center; padding:10px 0 4px; color:var(--accent); font-weight:800 }
+
+/* Skip link (hidden until focused for keyboard users) */
 .skip{
   position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
 }
-.skip:focus{ position:fixed; left:16px; top:16px; width:auto; height:auto; padding:8px 12px; background:#000; color:#fff; z-index:9999 }
+.skip:focus{
+  position:fixed; left:16px; top:16px; width:auto; height:auto;
+  padding:8px 12px; background:#000; color:#fff; z-index:9999
+}
 
-/* Mobile refinement */
-@media (max-width:600px){ .block{ min-width:90px; padding:12px 16px } }
-
-/* Respect reduced motion: disable decorative animation */
-@media (prefers-reduced-motion: reduce){
-  /* Fireworks intensity is set to 0 in JS; ensure CSS effects are still calm */
-  .block::after{ transition: none }
+/* Mobile tweaks: keep inline, scale text to fit */
+@media (max-width:420px){
+  .container.center{ padding:20px }
+  .timer-line{ gap: 10px; padding:12px 14px }
+  .item{ gap:6px }
 }
