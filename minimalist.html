@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>July 4 Countdown — Minimalist</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="assets/css/basecss
+</head>
+<body>
+  <div class="container">
+    <h1>Countdown to July 4 — 9:00 PM</h1>
+    <div id="cd" class="count" aria-live="polite">
+      <div class="block"><span class="num" data-part="days">0</span><span class="label">Days</span></div>
+      <div class="block"><span class="num" data-part="hours">00</span><span class="label">Hours</span></div>
+      <div class="block"><span class="num" data-part="minutes">00</span><span class="label">Minutes</span></div>
+      <div class="block"><span class="num" data-part="seconds">00</span><span class="label">Seconds</span></div>
+      <div class="label" data-part="done" hidden>Happy 4th of July! 🎆</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { startCountdown } from './assets/js/countdown.js';
+    startCountdown(document.getElementById('cd'), (ms, p) => {
+      document.title = `⌚ ${p.d}d ${String(p.h).padStart(2,'0')}:${String(p.m).padStart(2,'0')}:${String(p.sec).padStart(2,'0')}`;
+    });
+  </script>
+</body>
+</html>
