@@ -1,11 +1,38 @@
-// Wait for the DOM to fully load before running the script
 document.addEventListener('DOMContentLoaded', () => {
-    // Set the exact date and time (July 4, 2026 at 21:00:00)
     const countDownDate = new Date("July 4, 2026 21:00:00").getTime();
 
-    // Update the countdown every 1 second
-    const timerInterval = setInterval(function() {
+    // FIREWORKS LOGIC
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const colors = ['#bf0a30', '#ffffff', '#002868']; // Red, White, Blue
 
+    function launchFirework() {
+        confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { 
+                x: Math.random(), // Random horizontal position
+                y: Math.random() - 0.2 // Slightly off-screen start
+            },
+            colors: colors,
+            ticks: 200,
+            gravity: 1.2,
+            shapes: ['circle'],
+            scalar: 1.2
+        });
+    }
+
+    // Launch a firework every 3 to 7 seconds randomly
+    (function loop() {
+        const rand = Math.round(Math.random() * (7000 - 3000)) + 3000;
+        setTimeout(() => {
+            launchFirework();
+            loop();
+        }, rand);
+    }());
+
+    // COUNTDOWN LOGIC
+    const timerInterval = setInterval(function() {
         const now = new Date().getTime();
         const distance = countDownDate - now;
 
@@ -21,10 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("minutes").innerText = formatTime(minutes);
         document.getElementById("seconds").innerText = formatTime(seconds);
 
-        // If the countdown finishes
         if (distance < 0) {
             clearInterval(timerInterval);
             document.getElementById("countdown").innerHTML = "<h2 style='font-size: 3rem;'>Happy 250th Anniversary!</h2>";
+            // Final big firework finale
+            confetti({ particleCount: 500, spread: 160, colors: colors });
         }
     }, 1000);
 });
